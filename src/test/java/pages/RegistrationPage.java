@@ -2,6 +2,7 @@ package pages;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -82,5 +83,13 @@ public class RegistrationPage {
         sendEmailInput(email);
         sendPasswordInput(password);
         clickRegistrationButton();
+    }
+
+    @Step("Получение токена пользователя")
+    public String getAccessToken(){
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        return (String) js.executeScript("return window.localStorage.getItem('accessToken');");
     }
 }

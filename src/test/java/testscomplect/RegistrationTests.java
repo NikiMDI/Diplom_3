@@ -1,7 +1,9 @@
 package testscomplect;
 
+import api.UserApi;
 import base.BaseTest;
 import com.github.javafaker.Faker;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -12,6 +14,8 @@ import pages.RegistrationPage;
 import java.util.stream.Stream;
 
 public class RegistrationTests extends BaseTest {
+    private String accessToken;
+
     @ParameterizedTest
     @MethodSource("userDataProvider")
     public void checkRegistrationUserThroughInHeaderButton(String browser, String userName, String userEmail, String userPassword, boolean expectedResult) {
@@ -26,6 +30,7 @@ public class RegistrationTests extends BaseTest {
                     registrationPage.isLoginFormDisplayed()
             );
 
+            accessToken = registrationPage.getAccessToken();
         } else {
 
             Assertions.assertTrue(
@@ -48,6 +53,7 @@ public class RegistrationTests extends BaseTest {
                     registrationPage.isLoginFormDisplayed()
             );
 
+            accessToken = registrationPage.getAccessToken();
         } else {
 
             Assertions.assertTrue(
@@ -103,5 +109,17 @@ public class RegistrationTests extends BaseTest {
                         false
                 )
         );
+    }
+    @AfterEach
+    public void deleteTestUser(){
+
+        if(accessToken != null){
+
+            UserApi userApi = new UserApi();
+
+            userApi.deleteUser(accessToken);
+
+            accessToken = null;
+        }
     }
 }
