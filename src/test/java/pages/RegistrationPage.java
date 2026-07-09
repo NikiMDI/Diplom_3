@@ -18,6 +18,7 @@ public class RegistrationPage {
     private By passwordInput = By.xpath("//label[text()='Пароль']/following-sibling::input");
     private By registrationButton = By.xpath(".//button[text()='Зарегистрироваться']");
     private By isCorrectLigon = By.xpath(".//h2[text()='Вход']");
+    private By registrationError = By.xpath(".//p[contains(@class,'input__error')]");
 
     public RegistrationPage(WebDriver driver) {
         this.driver = driver;
@@ -53,12 +54,23 @@ public class RegistrationPage {
     }
 
     @Step("Проверка, что регистрация была успешной")
-    public boolean isCorrectLoginCheck() {
+    public boolean isLoginFormDisplayed() {
         try {
             new WebDriverWait(driver, Duration.ofSeconds(10))
                     .until(ExpectedConditions.visibilityOfElementLocated(isCorrectLigon));
             return true;
         }catch (TimeoutException e){
+            return false;
+        }
+    }
+
+    @Step("Проверка отображения ошибки регистрации")
+    public boolean isRegistrationErrorDisplayed() {
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(5))
+                    .until(ExpectedConditions.visibilityOfElementLocated(registrationError));
+            return true;
+        } catch (TimeoutException e) {
             return false;
         }
     }
