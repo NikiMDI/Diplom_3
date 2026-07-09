@@ -14,7 +14,7 @@ public class ConstructorTests extends BaseTest {
         setUp(browser);
         ConstructorPage constructorPage = new ConstructorPage(driver);
         constructorPage.clickFillingButton();
-        Assertions.assertTrue(constructorPage.isVisibilityFirstFillingInList());
+        Assertions.assertTrue(constructorPage.isFillingTabActive());
     }
 
     @ParameterizedTest
@@ -23,14 +23,17 @@ public class ConstructorTests extends BaseTest {
         setUp(browser);
         ConstructorPage constructorPage = new ConstructorPage(driver);
         constructorPage.clickSaucesButton();
-        Assertions.assertTrue(constructorPage.isVisibilityFirstSaucesInList());
+        Assertions.assertTrue(constructorPage.isSaucesTabActive());
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"chrome", "yandex"})
-    public void checkFoToBreadSection(String browser){
+    public void checkGoToBreadSection(String browser) {
         setUp(browser);
         ConstructorPage constructorPage = new ConstructorPage(driver);
-        Assertions.assertTrue(constructorPage.isVisibilityFirstBreadInList());
+        constructorPage.clickSaucesButton();
+        Assertions.assertFalse(constructorPage.isBreadTabActive());
+        constructorPage.clickBreadButton();
+        Assertions.assertTrue(constructorPage.isBreadTabActive());
     }
 }
